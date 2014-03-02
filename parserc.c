@@ -8,6 +8,9 @@ char tempStrg[80];
 int constantValue[50];
 /* holds the current input character for the parse */
 /* declarations to allow arbitrary recursion */
+void variable ();
+int letter ();
+void getLetter();
 void command();
 int expr();
 int term();
