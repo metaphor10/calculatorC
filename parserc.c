@@ -1,7 +1,8 @@
 #include <ctype.h>
 #include <stdlib.h>
 #include <stdio.h>
-int token; 
+int token;
+int currentVariable=0; 
 char variables[50][80];
 char tempStrg[80];
 int constantValue[50];
@@ -24,6 +25,16 @@ void getToken(){
 	void match(char c, char* message){
 	if (token == c) getToken();
 	else error(message);
+	}
+	void getLetter()
+	{
+		if (isalpha(token))
+		{
+			getToken();
+		}else
+		{
+			error("not a letter");
+		}
 	}
 	void command(){
 	/* command -> expr '\n' */
@@ -61,6 +72,31 @@ void getToken(){
 	else
 	result = number();
 	return result;
+	}
+	void variable (){
+		int locationInTempString=0;
+		int result=letter();
+		tempStrg[locationInTempString]=result;
+
+		while(isalpha(token))
+		{
+			locationInTempString++;
+			tempStrg[locationInTempString]=letter();
+		}
+		strcpy(variables[currentVariable],tempStrg);
+
+	}
+	int letter (){
+		int result =token;
+		if (isalpha(token))
+		{
+			getLetter();
+
+		}else
+		{
+			error("not a letter");
+		}
+		return result;
 	}
 	int number(){
 	/* number -> digit { digit } */
