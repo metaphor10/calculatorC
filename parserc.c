@@ -2,6 +2,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 int token; 
+char variables[50][80];
+char tempStrg[80];
+int constantValue[50];
 /* holds the current input character for the parse */
 /* declarations to allow arbitrary recursion */
 void command();
@@ -85,7 +88,9 @@ void getToken(){
 		else
 		error("digit expected");
 		return result;
-		}
+	}
+
+
 	void parse(){
 		getToken(); /* get the first token */
 		command(); /* call the parsing procedure for the start symbol */
