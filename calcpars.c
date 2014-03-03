@@ -43,7 +43,7 @@ void main()
 					
 				}
 				printf("%s, %s\n",tempVariableName,variables[0] );
-				if (isThereAVariable(tempVariableName))
+				if (!isThereAVariable(tempVariableName))
 				{
 					printf("there is a variable %i, %i, %i\n",valuesOfVariables[isThereAVariable(tempVariableName)],isThereAVariable(tempVariableName),valuesOfVariables[0] );
 				}
@@ -59,8 +59,9 @@ void main()
 						locationInTemoVariableName++;
 						previousToken=currentToken;
 				}
+				tempVariableName[locationInTemoVariableName]='\0';
 				printf(" variable 0%s\n", variables[0]);
-				if (isThereAVariable(tempVariableName))
+				if (!isThereAVariable(tempVariableName))
 				{
 					printf("is a match %c", currentToken);
 				}else
@@ -119,7 +120,7 @@ int isThereAVariable(char * variableName){
 	int i;
 	for (i=0;i<50;i++)
 	{
-		if (strcmp(variableName,variables[i])==0)
+		if (stringCompareMine(i,variableName))
 		{
 			return i;
 		}
@@ -142,7 +143,9 @@ int stringCompareMine (int location, char * stringToCompare)
 		if (variables[location][i]!=stringToCompare[i])
 		{
 			isTheSame=0;
+			return 0;
 		}
 		i++;
 	}
+	return 1;
 }
