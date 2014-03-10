@@ -1,6 +1,7 @@
 #include <ctype.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 char currentToken;
 char variables [50][80];
@@ -8,6 +9,7 @@ int valuesOfVariables[50];
 
 
 int placeInVariableArray;
+void resetVariableArray(char * );
 void command();
 char getToken();
 void checkForVariable();
@@ -21,6 +23,8 @@ void error(char* );
 void parse();
 int main()
 {
+	
+	valuesOfVariables[0]=2;
 	placeInVariableArray=0;
 	
 	parse();
@@ -36,15 +40,15 @@ void command(){
 	/* command -> expr '\n' */
 	checkForVariable();
 	checkIfIsAVariable();
-	 if(isdigit(currentToken))
+	 /*if(isdigit(currentToken))
 	{
 		//if the input is not a variable just a calculation
 	}else
 	{
 		printf("%s\n","not correct syntax" );
-	}
+	}*/
 	//int result = expr();
-	
+	parse();
 	
 }
 void checkIfIsAVariable()
@@ -59,9 +63,12 @@ void checkIfIsAVariable()
 		placeInTempVeriableName++;
 		if (isVariable(tempVariableName, placeInTempVeriableName)==1)
 		{
-			currentToken=getToken();
+			printf("%c token after is variable\n", currentToken);
+			
 			if (currentToken=='=')
 			{
+				printf ("inside equal");
+				currentToken=getToken();
 				int resultOfExpression=expr();
 				if (isThereAVariable(tempVariableName)!=-1)
 				{
@@ -94,6 +101,8 @@ void checkForVariable()
 {
 	int placeInTempVeriableName=0;
 	char tempVariableName[80];
+	
+	
 	if (currentToken=='?')
 	{
 		printf("question mark" );
@@ -134,13 +143,19 @@ char getToken()
 int isVariable(char * tempVariableName, int placeInTempVeriableName)
 {
 	int wasSucesful=0;
-	while((currentToken=getToken())!=EOF && isalpha(currentToken) && currentToken != ' ')
+	currentToken=getToken();
+	while(currentToken!=EOF && isalpha(currentToken) && currentToken != '\n' && currentToken != '\0' )
 				{
 					tempVariableName[placeInTempVeriableName]=currentToken;
+					printf("%i\n",placeInTempVeriableName );
 						placeInTempVeriableName++;
 						
 						wasSucesful=1;
+						currentToken=getToken();
 				}
+	tempVariableName[placeInTempVeriableName]='\0';
+
+	printf("%s is variable\n", tempVariableName );
 	return wasSucesful;
 
 }
@@ -200,6 +215,7 @@ int factor(){
 	return result;
 	}
 int number(){
+	printf("\n inside number" );
 	int result=0;
 	int placeInTempVeriableName=0;
 	char tempVariableName[80];
@@ -232,6 +248,7 @@ int number(){
 		/* digit -> '0' | '1' | '2' | '3' | '4'
 		| '5' | '6' | '7' | '8' | '9' */
 		int result;
+
 		if (isdigit(currentToken)){
 			/* the numeric value of a digit character
 			is the difference between its ascii value and the
@@ -245,9 +262,19 @@ int number(){
 		return result;
 	}
 	int stringCopyForMe(int location, char* stringToCopy){
-	int i;
-	for (i=0;i<80 ;i++)
+	int i,n;
+	for (i=0;i<80 && stringToCopy[i]!='\0' ;i++)
 	{
 		variables[location][i] = stringToCopy[i];
+		n=i;
+	}
+	variables[location][n+1]='\0';
+}
+void resetVariableArray(char * arrayToBeReset)
+{
+	int i;
+	for (i=0;i<strlen(arrayToBeReset);i++)
+	{
+		arrayToBeReset[i]='\0';
 	}
 }
