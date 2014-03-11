@@ -40,14 +40,16 @@ void command(){
 	/* command -> expr '\n' */
 	checkForVariable();
 	checkIfIsAVariable();
-	 /*if(isdigit(currentToken))
+	 if(isdigit(currentToken))
 	{
+		int result = expr();
+		printf("%i \n", result);
 		//if the input is not a variable just a calculation
 	}else
 	{
 		printf("%s\n","not correct syntax" );
-	}*/
-	//int result = expr();
+	}
+	
 	parse();
 	
 }
@@ -127,7 +129,13 @@ void checkForVariable()
 }
 char getToken()
 {
-	currentToken=getchar();
+	if ((currentToken=getchar())==' ')
+	{
+		while((currentToken=getchar())==' ')
+		{
+
+		}
+	}
 	
 	if (currentToken=='$')
 	{
